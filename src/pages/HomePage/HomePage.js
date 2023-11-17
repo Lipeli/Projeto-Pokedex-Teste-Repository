@@ -1,0 +1,32 @@
+import Card from "../../components/Card/Card";
+import { Container } from "./HomePage.styled";
+import Header from "../../components/Header/Header";
+import { GlobalContext } from "../../Contexts/GlobalContext";
+import { useContext } from "react";
+
+function HomePage() {
+  const context = useContext(GlobalContext);
+  const { pokelist, pokedex } = context;
+
+  // não mostrar pokemons que estão na pokedex
+  const filteredPokelist = () =>
+    pokelist.filter(
+      (pokemonInList) =>
+        !pokedex.find(
+          (pokemonInPokedex) => pokemonInList.name === pokemonInPokedex.name
+        )
+    );
+
+  return (
+    <Container>
+      <Header />
+      <section>
+        {filteredPokelist().map((pokemon) => (
+          <Card key={pokemon.url} pokemonUrl={pokemon.url} />
+        ))}
+      </section>
+    </Container>
+  );
+}
+
+export default HomePage;
